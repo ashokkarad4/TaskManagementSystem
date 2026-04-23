@@ -32,22 +32,22 @@
   </div>
 
   <div class="task-list" *ngIf="!isLoading">
-    <div class="task-item" *ngFor="let task of filteredTasks" [class.completed]="task.isCompleted">
+    <div class="task-item" *ngFor="let task of filteredTasks" [class.completed]="isTaskCompleted(task)">
       <div class="task-content">
         <div class="task-checkbox">
           <input 
             type="checkbox" 
-            [checked]="task.isCompleted"
+            [checked]="isTaskCompleted(task)"
             (change)="toggleTaskStatus(task)">
         </div>
         <div class="task-details">
-          <h3 class="task-title" [class.completed-text]="task.isCompleted">{{ task.title }}</h3>
+          <h3 class="task-title" [class.completed-text]="isTaskCompleted(task)">{{ task.title }}</h3>
           <p class="task-description">{{ task.description }}</p>
           <div class="task-meta">
-            <span class="task-status" [class.status-completed]="task.isCompleted">
-              {{ task.isCompleted ? 'Completed' : 'Pending' }}
+            <span class="task-status" [class.status-completed]="isTaskCompleted(task)">
+              {{ isTaskCompleted(task) ? 'Completed' : 'Pending' }}
             </span>
-            <span class="task-date">Created: {{ task.createdDate | date:'short' }}</span>
+            <span class="task-date">Created: {{ (task.createdDate || task.created) | date:'short' }}</span>
           </div>
         </div>
         <div class="task-actions-menu">

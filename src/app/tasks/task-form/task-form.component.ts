@@ -9,8 +9,11 @@ export interface Task {
   title: string;
   description: string;
   isCompleted: boolean;
-  createdDate: Date;
+  created?: string;
+  createdDate?: Date;
+  updated?: string;
   userId: number;
+  user?: any;
 }
 
 @Component({
@@ -59,11 +62,13 @@ export class TaskFormComponent implements OnInit {
     this.isLoading = true;
     this.taskService.getTask(id).subscribe(
       task => {
+        console.log('Task data received for edit:', task);
         this.taskForm.patchValue({
           title: task.title,
           description: task.description,
-          isCompleted: task.isCompleted
+          isCompleted: task.isCompleted || task.status === 'completed' // Handle both isCompleted and status fields
         });
+        console.log('Form values after patch:', this.taskForm.value);
         this.isLoading = false;
       },
       error => {
@@ -83,6 +88,8 @@ export class TaskFormComponent implements OnInit {
         description: this.taskForm.get('description')?.value,
         isCompleted: this.taskForm.get('isCompleted')?.value
       };
+      
+      console.log('Task data being sent:', taskData);
 
       if (this.isEditMode && this.taskId) {
         this.taskService.updateTask(this.taskId, taskData).subscribe(

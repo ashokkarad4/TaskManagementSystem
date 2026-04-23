@@ -8,8 +8,11 @@ export interface Task {
   title: string;
   description: string;
   isCompleted: boolean;
-  createdDate: Date;
+  created?: string;
+  createdDate?: Date;
+  updated?: string;
   userId: number;
+  user?: any;
 }
 
 @Component({
@@ -44,6 +47,7 @@ export class TaskListComponent implements OnInit {
     
     this.taskService.getTasks().subscribe(
       tasks => {
+        console.log('Tasks received from backend:', tasks);
         this.tasks = tasks;
         this.filterTasks();
         this.isLoading = false;
@@ -63,28 +67,33 @@ export class TaskListComponent implements OnInit {
   filterTasks(): void {
     switch (this.currentFilter) {
       case 'pending':
-        this.filteredTasks = this.tasks.filter(task => !task.isCompleted);
+        this.filteredTasks = this.tasks.filter(task => this.isTaskCompleted(task) === false);
         break;
       case 'completed':
-        this.filteredTasks = this.tasks.filter(task => task.isCompleted);
+        this.filteredTasks = this.tasks.filter(task => this.isTaskCompleted(task) === true);
         break;
       default:
         this.filteredTasks = this.tasks;
     }
   }
 
+  isTaskCompleted(task: any): boolean {
+    return task.isCompleted === true || task.status === 'completed';
+  }
+
   toggleTaskStatus(task: Task): void {
-    const updatedTask = { ...task, isCompleted: !task.isCompleted };
+    const currentStatus = this.isTaskCompleted(task);
     
-    this.taskService.updateTask(task.id, updatedTask).subscribe(
+    console.log('Toggling task status:', { taskId: task.id, currentStatus, newStatus: !currentStatus });
+    
+    this.taskService.toggleTaskStatus(task.id).subscribe(
       response => {
-        const index = this.tasks.findIndex(t => t.id === task.id);
-        if (index !== -1) {
-          this.tasks[index] = response;
-          this.filterTasks();
-        }
+        console.log('Toggle response:', response);
+        // After successful toggle, reload tasks to get updated status
+        this.loadTasks();
       },
       error => {
+        console.error('Failed to update task status:', error);
         this.errorMessage = 'Failed to update task status.';
       }
     );

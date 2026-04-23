@@ -34,4 +34,8 @@ export class TaskService {
   getTasksByStatus(status: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/tasks/status/${status}`);
   }
+
+  toggleTaskStatus(id: number): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/tasks/${id}/toggle`, {});
+  }
 }
