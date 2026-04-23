@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger;
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';

@@ -29,5 +29,11 @@ import 'classlist.js';  // Run `npm install --save classlist.js`.
 import 'web-animations-js'; // Run `npm install --save web-animations-js`.
 
 /***************************************************************************************************
+ * ZONE JS
+ */
+
+import 'zone.js';  // Included with Angular CLI.
+
+/***************************************************************************************************
  * APPLICATION IMPORTS
  */
