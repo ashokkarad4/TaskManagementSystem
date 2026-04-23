@@ -1,0 +1,26 @@
+<div class="task-list-container">
+  <div class="task-header">
+    <h2>Task List</h2>
+    <div class="filter-buttons">
+      <button (click)="onFilterChange('all')" [class.active]="filterStatus === 'all'">All</button>
+      <button (click)="onFilterChange('pending')" [class.active]="filterStatus === 'pending'">Pending</button>
+      <button (click)="onFilterChange('completed')" [class.active]="filterStatus === 'completed'">Completed</button>
+    </div>
+  </div>
+
+  <div class="task-items">
+    <div *ngFor="let task of tasks" class="task-item" [class.completed]="task.status === 'completed'">
+      <div class="task-content">
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.description }}</p>
+        <span class="task-status">{{ task.status }}</span>
+      </div>
+      <div class="task-actions">
+        <button (click)="toggleTaskStatus(task)" class="btn-toggle">
+          {{ task.status === 'completed' ? 'Mark Pending' : 'Mark Complete' }}
+        </button>
+        <button (click)="deleteTask(task.id)" class="btn-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
