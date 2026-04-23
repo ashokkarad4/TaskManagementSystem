@@ -19,6 +19,10 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/register`, userData);
   }
 
+  saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
   logout(): void {
     localStorage.removeItem('token');
   }

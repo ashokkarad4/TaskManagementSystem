@@ -1,8 +1,22 @@
 <div class="container">
   <header>
-    <h1>{{ title }}</h1>
+    <h1>Task Management System</h1>
+    <nav>
+      <!-- Show auth links when not logged in -->
+      <ng-container *ngIf="!isLoggedIn()">
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+      </ng-container>
+      
+      <!-- Show task management and logout when logged in -->
+      <ng-container *ngIf="isLoggedIn()">
+        <a routerLink="/tasks" routerLinkActive="active">My Tasks</a>
+        <a routerLink="/tasks/new" routerLinkActive="active">New Task</a>
+        <button class="btn-logout" (click)="logout()">Logout</button>
+      </ng-container>
+    </nav>
   </header>
   <main>
-    <p>Welcome to Task Management System</p>
+    <router-outlet></router-outlet>
   </main>
 </div>
